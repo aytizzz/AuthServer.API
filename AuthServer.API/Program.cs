@@ -1,4 +1,9 @@
+using AuthServer.API;
+using SharedLibrary.Configurations;
+using System.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCustomTokenOptionServices(builder.Configuration);
 
 // Add services to the container.
 

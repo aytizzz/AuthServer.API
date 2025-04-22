@@ -36,9 +36,11 @@ namespace SharedLibrary.Dtos
 
         public static Response<T> Fail(string errorMessage,int statusCode,bool isShow)
         {
+            var errorDto = new ErrorDto (errorMessage, isShow );
             return new Response<T>
             {
-                ///yazilmalii
+                Error = errorDto,
+                StatusCode = statusCode
             };
         }
     }

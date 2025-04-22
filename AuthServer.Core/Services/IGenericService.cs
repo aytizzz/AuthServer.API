@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 // struktur: burda duzeldib apiye gondermek
 namespace AuthServer.Core.Services
 {
-   public interface IServiceGeneric<TEntity,TDto> where TEntity:class where TDto:class
+   public interface IGenericService<TEntity,TDto> where TEntity:class where TDto:class
     {
         Task<Response<TDto>> GetByIdAsync(int id); // apide kullanicamiz datayi donucez
         Task<Response<IEnumerable<TDto>>> GetAllAsync();
-        Response<IEnumerable<TDto>> Where(Expression<Func<TEntity, bool>> predicate); // apide islem yapmiyacagiz diye ienumarable done bilirz
-        Task <Response<TDto>> AddAsync(TEntity entity);
-       Task<Response<NoDataDto>>Remove(TEntity entity); // geriye bos klass donuruk
-        Task<Response<NoDataDto>>Update(TEntity entity);
+       Task< Response<IEnumerable<TDto>>> Where(Expression<Func<TEntity, bool>> predicate); // apide islem yapmiyacagiz diye ienumarable done bilirz
+        Task <Response<TDto>> AddAsync(TDto dto);
+       Task<Response<NoDataDto>>Remove(int id); 
+        Task<Response<NoDataDto>>Update(TDto dto,int id);
 
     }
 }

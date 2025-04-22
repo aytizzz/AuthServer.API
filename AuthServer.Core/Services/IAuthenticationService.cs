@@ -1,9 +1,10 @@
 ﻿using AuthServer.Core.DTOs.Login;
 using AuthServer.Core.DTOs.Token;
-using SharedLibrary.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SharedLibrary.Dtos;
+
 using System.Text;
 using System.Threading.Tasks;
 
