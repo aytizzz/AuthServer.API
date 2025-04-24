@@ -17,6 +17,6 @@ namespace AuthServer.Core.Services
 
         // user logout edende refreshtokenini null etmek
         Task<Response<NoDataDto>> RevokeRefreshToken(string RefreshToken);
-        Task<Response<ClientTokenDto>> CreateTokenByClient(ClientLoginDto clientLoginDto);
+        Response<ClientTokenDto> CreateTokenByClient(ClientLoginDto clientLoginDto);
     }
 }

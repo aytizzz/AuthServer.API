@@ -29,7 +29,9 @@ namespace SharedLibrary.Dtos
             return new Response<T>
             {
                 StatusCode = statusCode,
-                Error = errorDto
+                Error = errorDto,
+                IsSuccesful=isShow
+                
             };
         }
 
@@ -43,5 +45,8 @@ namespace SharedLibrary.Dtos
                 StatusCode = statusCode
             };
         }
+
+        
+
     }
 }
