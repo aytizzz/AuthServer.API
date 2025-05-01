@@ -1,35 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SharedLibrary.Dtos
+﻿namespace SharedLibrary.Dtos
 {
     public class ErrorDto
     {
         // 1den fazla hata done bilmek icin list kullancaz
         public List<string> Errors { get; private set; }
-        public bool IsShow { get; private set; } // bazi hatalar ola bilirki sadece cliente donmek isteriz user-e gostermek istemeyiz onun icin
-
+        public bool IsShow { get; private set; } // client  erroru usere  gostermek=true , eksi =false
 
         public ErrorDto()
         {
             Errors = new List<string>();
         }
 
-        public ErrorDto(string error,bool isShow )
+        public ErrorDto(string error, bool isShow)
         {
-            Errors.Add(error);
-            isShow = true;
-
+            Errors = new List<string>();  // Errors listini hər zaman yenidən yaratdıq
+            Errors.Add(error);  // Erroru Errors listinə əlavə et
+            IsShow = isShow;  // Burada isShow-u IsShow property-sinə təyin edirik
         }
-        public ErrorDto(List<string> errors,bool isShow)
+
+        public ErrorDto(List<string> errors, bool isShow)
         {
-            Errors = Errors;
+            Errors = errors;  // Burada parametr olaraq gələn 'errors' listini təyin edirik
             IsShow = isShow;
         }
-
-
     }
 }

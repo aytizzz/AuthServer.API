@@ -14,7 +14,7 @@ namespace AuthServer.Service.Services
 {
     public class UserService : IUserService
     {
-        private readonly UserManager<UserApp> _userManager;
+        private readonly UserManager<UserApp> _userManager; // kullaniciyla ilgili islemler
         public UserService(UserManager<UserApp>userManager)
         {
             _userManager = userManager;

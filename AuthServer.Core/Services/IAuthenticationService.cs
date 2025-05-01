@@ -12,11 +12,13 @@ namespace AuthServer.Core.Services
 {
     public interface IAuthenticationService
     {
-        Task<Response<TokenDto>> CreateAccessToken(LoginDto loginDto);
-        Task<Response<TokenDto>> CreateTokenByRefreshToken(string RefreshToken);
+        // apiye gondereceyimiz ucun geriye dto donuruk
+        Task<Response<TokenDto>> CreateAccessToken(LoginDto loginDto);  // eger login datalar dogrudusa geriye token donuruk
+        Task<Response<TokenDto>> CreateTokenByRefreshToken(string RefreshToken);  // refreshtokenle yeni token yaratma
 
-        // user logout edende refreshtokenini null etmek
-        Task<Response<NoDataDto>> RevokeRefreshToken(string RefreshToken);
-        Response<ClientTokenDto> CreateTokenByClient(ClientLoginDto clientLoginDto);
+        Task<Response<NoDataDto>> RevokeRefreshToken(string RefreshToken);   // user logout edende refreshtokenini null etmek
+
+        Response<ClientTokenDto> CreateTokenByClient(ClientLoginDto clientLoginDto); // clientlere token olusturma=> gelen clientlogindto icerisindeki datalar
+                                                                                        // heqiqeten bizim appsettingjson da varsa geriye clientTokendto donme
     }
 }

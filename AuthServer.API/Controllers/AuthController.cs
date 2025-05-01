@@ -20,7 +20,7 @@ namespace AuthServer.API.Controllers
         public async Task<IActionResult> CreateToken(LoginDto loginDto)
         {
             var result = await _authenticationService.CreateAccessToken(loginDto);
-            return ActionResultInstance(result); /* if (result.statuscode==200) {return ok(result) else if(result.statuscode==404 return notfound )}*/
+            return ActionResultInstance(result);                                   /* if (result.statuscode==200) {return ok(result) else if(result.statuscode==404 return notfound )}*/
         }
 
         [HttpPost]
@@ -30,7 +30,7 @@ namespace AuthServer.API.Controllers
             return ActionResultInstance(result);
         }
         [HttpPost]
-        public async Task< IActionResult> RevokeRefreshToken(RefreshTokenDto refreshTokenDto)
+        public async Task< IActionResult> RevokeRefreshToken(RefreshTokenDto refreshTokenDto) // dto tutmaq zorundamiyiz bir parametre olsa
         {
             var result =  await _authenticationService.RevokeRefreshToken(refreshTokenDto.RefreshToken);
             return ActionResultInstance(result);

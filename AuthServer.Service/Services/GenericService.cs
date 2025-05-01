@@ -12,6 +12,10 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
+
+// /*service katmaninda core katmanindan gelen datayi dto cevirib ele gondermek*/
+// struktur: burda duzeldib apiye gondermek
+
 namespace AuthServer.Service.Services
 {
     public class GenericService<TEntity, TDto> : IGenericService<TEntity, TDto> where TEntity : class where TDto : class
@@ -27,7 +31,7 @@ namespace AuthServer.Service.Services
 
         public async Task<Response<TDto>> AddAsync(TDto dto)
         {
-            var newEntity = ObjectMapper.mapper.Map<TEntity>(dto); // dto yerine entity yazmisdi
+            var newEntity = ObjectMapper.mapper.Map<TEntity>(dto); 
             await _genericRepository.AddAsync(newEntity);
             await _unitOfWork.CommitAsync();
 
@@ -75,7 +79,7 @@ namespace AuthServer.Service.Services
             var updatedEntity = ObjectMapper.mapper.Map<TEntity>(dto);
             _genericRepository.Update(updatedEntity);
             _unitOfWork.CommitAsync();
-
+             // update edende tdto dondurmeme 
             //204-No Content =>Response bodysinde hec bir data olmuyacaq
 
             return Response<NoDataDto>.Success(204);

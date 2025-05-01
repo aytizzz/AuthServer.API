@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharedLibrary.Configurations
 {
-    public class CustomTokenOption
+    public class CustomTokenOption // Token optionsdu tokene aid datalar
     {
         public List< string> Audience { get; set; }
         public string Issuer { get; set; }

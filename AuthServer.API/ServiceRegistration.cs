@@ -12,6 +12,8 @@ using SharedLibrary.Configurations;
 using AuthServer.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using AuthServer.Data;
 
 namespace AuthServer.API
 {
@@ -22,7 +24,7 @@ namespace AuthServer.API
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IUnitOfWork, IUnitOfWork>();
+            services.AddScoped<IUnitOfWork,UnitOfWork>();
             services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
             services.AddScoped(typeof(IGenericService<,>), typeof(GenericService<,>));
             services.Configure<CustomTokenOption>(configuration.GetSection("TokenOptions"));
@@ -47,40 +49,28 @@ namespace AuthServer.API
             // bir token geldikde onu dogrulamaq-bir endpointe istek yapilacak ve onda dogrulama islemi gerceklesdirelecek
 
 
-
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
-            {
-                var tokenOptions = configuration.GetSection("TokenOption").Get<CustomTokenOption>();
-                opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
-                {
-                    ValidateIssuer = tokenOptions.Issuer,
-                    ValidateAudience = tokenOptions.Audience[0],
-                    IssuerSigningKey = SignService.getsymmericsecuritykey
-                };
+            })
+        .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, opts =>
+      {
+           var tokenOptions = configuration.GetSection("TokenOptions").Get<CustomTokenOption>(); 
 
-
-
-
-
-
-
-            });
-
-
-
-
-
-
-
-
+            opts.TokenValidationParameters = new TokenValidationParameters
+        {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = SignService.GetSymmetricSecurityKey(tokenOptions.SecurityKey),
+        ValidateIssuer = true,
+        ValidIssuer = tokenOptions.Issuer,
+        ValidateAudience = true,
+        ValidAudiences = tokenOptions.Audience,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+        };
+         });
 
         }
     }
 }
-//Bu kod deyir ki:
-
-//"Ey .NET, TokenOptions adlanan hissəni götür, CustomTokenOption obyektinə çevir və lazım olduqda onu mənə ver."

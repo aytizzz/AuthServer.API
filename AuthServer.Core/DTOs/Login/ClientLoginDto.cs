@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AuthServer.Core.DTOs.Login
-{// Service katmaninda implemente edecez
+{
+    
 
     public class ClientLoginDto
     {
         public string ClientId { get; set; }
-        public string ClientSecret { get; set; }
+        public string ClientSecret { get; set; } // password gibi dusuncez
     }
 }

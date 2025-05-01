@@ -32,35 +32,38 @@ namespace AuthServer.Service.Services
             var accessTokenExpiration = DateTime.UtcNow.AddMinutes(_tokenOption.AccessTokenExpiration);
             var refreshTokenExpiration = DateTime.UtcNow.AddMinutes(_tokenOption.RefreshTokenExpiration);
 
+            // Zamanı UTC ilə uyğunlaşdırdıq
+            var notBefore = DateTime.UtcNow;  // Tokenin istifadə olmağa başlayacağı vaxt
+            var expires = accessTokenExpiration;  // Tokenin bitmə vaxtı
+
             var securityKey = SignService.GetSymmetricSecurityKey(_tokenOption.SecurityKey);
 
             SigningCredentials signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
+            // JWT tokeni yaratmaq
             JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
-
                 issuer: _tokenOption.Issuer,
-                expires: accessTokenExpiration,
-                notBefore:DateTime.Now,
-                claims:GetClaims(userApp,_tokenOption.Audience),
-                signingCredentials:signingCredentials
+                expires: expires, // Bitmə vaxtı
+                notBefore: notBefore, // Başlanğıc vaxtı
+                claims: GetClaims(userApp, _tokenOption.Audience),
+                signingCredentials: signingCredentials
+            );
 
-                );
             var handler = new JwtSecurityTokenHandler();
-            var accesstoken = handler.WriteToken(jwtSecurityToken); // token yaradir
+            var accessToken = handler.WriteToken(jwtSecurityToken); // Token yarat
 
-
-            //tokeni dto donsuturme
+            // Tokeni DTO (Data Transfer Object) ilə döndərmək
             var tokenDto = new TokenDto
             {
-                AccessToken = accesstoken,
-                RefreshToken=CreateRefreshToken(),
-                AccessTokenExpiration=accessTokenExpiration,
-                RefreshTokenExpiration=refreshTokenExpiration
-
-
+                AccessToken = accessToken,
+                RefreshToken = CreateRefreshToken(),
+                AccessTokenExpiration = accessTokenExpiration,
+                RefreshTokenExpiration = refreshTokenExpiration
             };
+
             return tokenDto;
         }
+
 
         public ClientTokenDto CreateTokenByClient(Client client)
         {
@@ -133,3 +136,29 @@ namespace AuthServer.Service.Services
     }
 
 }
+
+/*
+ 
+ Əsas Claim-lər:
+ClaimTypes.NameIdentifier: İstifadəçinin unikal identifikatoru (userApp.Id).
+
+JwtRegisteredClaimNames.Email: İstifadəçinin e-poçt ünvanı (userApp.Email).
+
+ClaimTypes.Name: İstifadəçinin istifadəçi adı (userApp.UserName).
+
+JwtRegisteredClaimNames.Jti: Tokenin unikal identifikatoru (UUID), hər token üçün fərqli olur.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ */
